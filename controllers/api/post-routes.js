@@ -26,4 +26,27 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/:id', (req, res) => {
+  Post.findOne({
+      where: {
+        id: req.params.id
+      },
+      attributes: ['id', 'title', 'post_text', 'user_id'],
+      include: [
+        {
+            model: Comment,
+            attributes: ['id', 'title', 'post_text', 'user_id', 'created_at'],
+            include: {
+                model: User,
+                attributes: ['username']
+              }
+            },
+            {
+              model: User,
+              attributes: ['username']
+            }
+    ]
+    })
+})
+
 module.exports = router;
